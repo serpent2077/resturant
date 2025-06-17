@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hitler's Restaurant Menu</title>
+
+<!-- Inter font for general text -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+<!-- Meie Script font for restaurant name and tagline -->
+<link href="https://fonts.googleapis.com/css2?family=Meie+Script&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<style>
+  /* Reset and base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    color: #e0e7ff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #0f172a;
+    background-image: url('https://images.pexels.com/photos/2641886/pexels-photo-2641886.jpeg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    background-size: cover;
+    position: relative;
+  }
+
+  /* Overlay for readability with reduced opacity so bg is more visible */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42, 0.45);
+    z-index: 0;
+  }
+
+  main.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    position: relative;
+    z-index: 1;
+    background: rgba(30 41 59 / 0.6);
+    border-radius: 24px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.7);
+    backdrop-filter: saturate(180%) blur(20px);
+    transition: background-color 0.3s ease;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Header */
+  header {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid rgba(255 255 255 / 0.1);
+  }
+  .logo {
+    width: 120px;
+    height: 120px;
+    flex-shrink: 0;
+    opacity: 0.85;
+    transition: opacity 0.3s ease;
+  }
+  .logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+  }
+  .logo:hover {
+    opacity: 1;
+  }
+  .restaurant-name {
+    font-family: 'Meie Script', cursive;
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.1;
+    background: linear-gradient(90deg, #22d3ee, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .tagline {
+    font-family: 'Meie Script', cursive;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #60a5fa;
+    margin-top: 4px;
+    opacity: 1;
+  }
+
+  /* Menu categories container */
+  .menu {
+    display: grid;
+    /* Broaden columns by using minmax with larger min width */
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 32px;
+  }
+
+  /* Menu category card */
+  .menu-category {
+    background: rgba(15 23 42 / 0.55);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+    backdrop-filter: saturate(180%) blur(12px);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: background-color 0.3s ease;
+  }
+  .menu-category h2 {
+    margin: 0 0 8px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #38bdf8;
+    border-bottom: 3px solid #22d3ee;
+    padding-bottom: 6px;
+  }
+
+  /* Menu item */
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid rgba(96,165,250,0.3);
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    background-color: rgba(30,41,59,0.45);
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease,
+      background-color 0.3s ease;
+  }
+  .menu-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  .menu-item:hover, .menu-item:focus-within {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(59, 130, 246, 0.6);
+    background-color: rgba(59, 130, 246, 0.15);
+    cursor: pointer;
+  }
+  .item-image {
+    flex-shrink: 0;
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 8px rgba(96,165,250,0.4);
+    transition: transform 0.3s ease;
+  }
+  .menu-item:hover .item-image, .menu-item:focus-within .item-image {
+    transform: scale(1.05);
+  }
+  .item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .item-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .item-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #7dd3fc;
+  }
+  .item-description {
+    font-size: 0.9rem;
+    color: #94a3b8;
+  }
+  .item-price {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #38bdf8;
+    white-space: nowrap;
+  }
+  .lava-description {
+    font-size: 0.8rem;
+    color: #94a3b8;
+  }
+
+  /* Responsive heading alignment */
+  @media (max-width: 480px) {
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .restaurant-name {
+      font-size: 2.5rem;
+    }
+    .tagline {
+      font-size: 1.4rem;
+    }
+    .menu {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+  <main class="container" role="main">
+    <header>
+      <div class="logo" role="img" aria-label="Hitler's Restaurant Logo">
+        <img src="https://media.craiyon.com/2025-04-08/AEnFqwwfTf6uqxryyXmzjQ.webp" alt="Logo of Hitler's Restaurant with artistic colorful design" />
+      </div>
+      <div>
+        <h1 class="restaurant-name">Hitler's Restaurant</h1>
+        <p class="tagline">Harvesting flavor in every bite</p>
+      </div>
+    </header>
+
+    <section class="menu" aria-label="Restaurant menu categories">
+
+      <article class="menu-category" aria-labelledby="appetizers-title">
+        <h2 id="appetizers-title">Appetizers</h2>
+        <div class="menu-item" tabindex="0">
+          <div class="item-image">
+            <img src="https://www.recipetineats.com/tachyon/2015/09/Cheese-Herb-Garlic-Quick-Bread_3.jpg" alt="Herb & Garlic Bread" />
+          </div>
+          <div class="item-details">
+            <div class="item-name">Herb & Garlic Bread</div>
+            <div class="item-description">Freshly baked bread with herb and garlic spread.</div>
+          </div>
+          <div class="item-price">$6</div>
+        </div>
+        <div class="menu-item" tabindex="0">
+          <div class="item-image">
+            <img src="https://www.giallozafferano.com/images/276-27601/Chinese-Spring-Rolls_1200x800.jpg" alt="Vegetable Spring Rolls" />
+          </div>
+          <div class="item-details">
+            <div class="item-name">Vegetable Spring Rolls</div>
+            <div class="item-description">Crispy rolls filled with fresh vegetables.</div>
+          </div>
+          <div class="item-price">$7</div>
+        </div>
+        <div class="menu-item" tabindex="0">
+          <div class="item-image">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_mZ9trqU6jIu9VAl9J9iMMWenEoomaP93dg&s" alt="Fried Godzilla" />
+          </div>
+          <div class="item-details">
+            <div class="item-name">Fried Godzilla</div>
+            <div class="item-description">A monstrous fried delight!</div>
+          </div>
+          <div class="item-price">$10000</div>
+        </div>
+        <div class="menu-item" tabindex="0">
+          <div class="item-image">
+            <img src="https://i.ytimg.com/vi/2XZMczDDM-w/sddefault.jpg" alt="|\|@zi special salad" />
+          </div>
+          <div class="item-details">
+            <div class="item-name">|\|@zi Special Salad</div>
+            <div class="item-description">Made with a special recipe stolen from a |\|@zi base in 1940.</div>
+          </div>
+          <div class="item-price">$12</div>
+        </div>
+      </article>
+
+      <article class="menu-category" aria-labelledby="maincourses-title">
+        <h2 id="maincourses-title">Main Courses</h2>
+        <div class="menu-item" tabindex="0">
+          <div class="item-image">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/24e86135-7278-4371-9c95-24a25ae063e0.png" alt="Grilled salmon fillet with lemon and asparagus" />
+          </div>
+          <div class="item-details">
+            <div class="item-name">Grilled Salmon</div>
+            <div class="item-description">Fresh salmon grilled to perfection, served with lemon and seasonal asparagus.</div>
+          </div>
+          <div class="item-price">$200</div>
+        </div>
+        <div class="menu-item" tabindex="0">
+          <div class="item-image">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f9bd998a-0bef-4109-bde1-53027c7d15c7.png" alt="Medium-rare ribeye steak with rosemary and garlic butter" />
+          </div>
+          <div class="item-details">
+            <div class="item-name">Ribeye Steak</div>
+            <div class="item-description">Juicy medium-rare ribeye with rosemary garlic butter and roasted potatoes.</div>
+          </div>
+          <div class="item-price">$599</div>
+        </div>
+        <div class="menu-item" tabindex="0">
+          <div class="item-image">
+            <img src="https://fbi.cults3d.com/uploaders/36750651/illustration-file/ad10e497-862f-4f3d-9f41-2d43c0d799db/Lavachicken1.png" alt="Lava Chicken" />
+          </div>
+          <div class="item-details">
+            <div class="item-name">Lava Chicken</div>
+            <div class="item-description lava-description">La-la-la-lava ch-ch-ch-chicken Steve's Lava Chicken, yeah, it's tasty as hell Ooh, mamacita, now you're ringin' the bell Crispy and juicy, now you're havin' a snack Ooh, super spicy, it's a lava attack</div>
+          </div>
+          <div class="item-price">$1200</div>
+        </div>
+        <div class="menu-item" tabindex="0">
+          <div class="item-image">
+            <img src="https://savoryspin.com/wp-content/uploads/2018/01/Sri-Lankan-Kottu-Roti.jpg" alt="Seafood Kottu" />
+          </div>
+          <div class="item-details">
+            <div class="item-name">Seafood Kottu</div>
+            <div class="item-description">A delicious mix of seafood and kottu roti.</div>
+          </div>
+          <div class="item-price">$18</div>
+        </div>
+        <div class="menu-item" tabindex="0">
+          <div class="item-image">
+            <img src="https://p.novaskin.me/5279133787.png" alt="Deep Fried Minecraft Zombie" />
+          </div>
+          <div class="item-details">
+            <div class="item-name">Deep Fried Minecraft Zombie</div>
+            <div class="item-description">Chef’s mysterious special with a crispy bite you won’t forget.</div>
+          </div>
+          <div class="item-price">$4000</div>
+        </div>
+      </article>
+
+      <article class="menu-category" aria-labelledby="desserts-title">
+        <h2 id="desserts-title">Desserts</h2>
+        <div class="menu-item" tabindex="0">
+          <div class="item-image">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8b1eed04-1e81-4cba-91fc-edd99b486b26.png" alt="Classic Italian tiramisu with cocoa powder topping" />
+          </div>
+          <div class="item-details">
+            <div class="item-name">Tiramisu</div>
+            <div class="item-description">Rich mascarpone layered with espresso-soaked ladyfingers and cocoa dust.</div>
+          </div>
+          <div class="item-price">$9</div>
+        </div>
+        <div class="menu-item" tabindex="0">
+          <div class="item-image">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/44bd5344-a795-432e-b7a9-87a984f01d38.png" alt="Creamy cheesecake topped with fresh strawberries" />
+          </div>
+          <div class="item-details">
+            <div class="item-name">Strawberry Cheesecake</div>
+            <div class="item-description">Smooth cheesecake with a graham cracker crust and fresh strawberries.</div>
+          </div>
+          <div class="item-price">$9</div>
+        </div>
+        <div class="menu-item" tabindex="0">
+          <div class="item-image">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/75af4870-b76e-4c03-ade9-923162ae4a21.png" alt="Decadent chocolate mousse topped with whipped cream" />
+          </div>
+          <div class="item-details">
+            <div class="item-name">Chocolate Mousse</div>
+            <div class="item-description">Light and fluffy chocolate mousse topped with whipped cream and shaved chocolate.</div>
+          </div>
+          <div class="item-price">$8</div>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
